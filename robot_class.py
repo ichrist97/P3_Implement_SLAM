@@ -64,9 +64,6 @@ class robot:
     #        is of variable length. Set measurement_range to -1 if you want all
     #        landmarks to be visible at all times
     #
-    
-    ## TODO: paste your complete the sense function, here
-    ## make sure the indentation of the code is correct
     def sense(self):
         ''' This function does not take in any parameters, instead it references internal variables
             (such as self.landamrks) to measure the distance between the robot and any landmarks
@@ -79,18 +76,16 @@ class robot:
            
         measurements = []
         
-        ## TODO: iterate through all of the landmarks in a world
-        
-        ## TODO: For each landmark
-        ## 1. compute dx and dy, the distances between the robot and the landmark
-        ## 2. account for measurement noise by *adding* a noise component to dx and dy
-        ##    - The noise component should be a random value between [-1.0, 1.0)*measurement_noise
-        ##    - Feel free to use the function self.rand() to help calculate this noise component
-        ## 3. If either of the distances, dx or dy, fall outside of the internal var, measurement_range
-        ##    then we cannot record them; if they do fall in the range, then add them to the measurements list
-        ##    as list.append([index, dx, dy]), this format is important for data creation done later
-        
-        ## TODO: return the final, complete list of measurements
+        for index, landmark in enumerate(self.landmarks):
+            dx = landmark[0] - self.x + self.rand()*self.measurement_noise
+            dy = landmark[1] - self.y + self.rand()*self.measurement_noise
+
+            dx = abs(dx)
+            dy = abs(dy)
+
+            if self.measurement_range is -1 or (dx < self.measurement_range and dy < self.measurement_range):
+                measurements.append((index, dx , dy))
+
         return measurements
 
 
@@ -109,7 +104,3 @@ class robot:
     # called when print(robot) is called; prints the robot's location
     def __repr__(self):
         return 'Robot: [x=%.5f y=%.5f]'  % (self.x, self.y)
-
-
-
-####### END robot class #######
